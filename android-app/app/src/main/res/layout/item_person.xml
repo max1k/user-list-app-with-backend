@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:id="@+id/photo_image_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_person"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:contentDescription="@string/user_photo_description" />
+
+    <TextView
+        android:id="@+id/user_company_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:text="@string/stub_name"
+        android:lines="1"
+        android:ellipsize="end"
+        app:layout_constraintTop_toBottomOf="@id/user_name_text_view"
+        app:layout_constraintStart_toEndOf="@id/photo_image_view"
+        app:layout_constraintEnd_toStartOf="@id/fired_image_view" />
+
+    <TextView
+        android:id="@+id/user_name_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:lines="1"
+        android:text="@string/stub_name"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/photo_image_view"
+        app:layout_constraintEnd_toStartOf="@id/fired_image_view"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/photo_image_view"
+        app:layout_constraintTop_toTopOf="@id/photo_image_view"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+    <ImageView
+        android:id="@+id/more_image_view_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_more"
+        android:padding="6dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/more_options_button_text" />
+
+    <ImageView
+        android:id="@+id/liked_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_like"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/more_image_view_button"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/like_image_description"/>
+
+    <ImageView
+        android:id="@+id/fired_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_fired"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/active_image_view"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/fired_image_description" />
+
+    <ImageView
+        android:id="@+id/active_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_active"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/liked_image_view"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/active_image_description" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="photo_image_view, user_company_text_view"
+        app:barrierDirection="bottom" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="6dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

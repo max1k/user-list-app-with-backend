@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Users list application</string>
+    <string name="stub_name">Vassily Poupkine</string>
+    <string name="more_options_button_text">options button</string>
+    <string name="user_photo_description">user photo</string>
+    <string name="like_image_description">Like image</string>
+    <string name="active_image_description">Active image</string>
+    <string name="fired_image_description">Fired image</string>
+</resources>
