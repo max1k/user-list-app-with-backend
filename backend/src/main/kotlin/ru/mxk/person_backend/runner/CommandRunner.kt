@@ -1,6 +1,7 @@
 package ru.mxk.person_backend.runner
 
 import com.github.javafaker.Faker
+import org.slf4j.LoggerFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.stereotype.Component
 import ru.mxk.person_backend.model.Person
@@ -8,11 +9,12 @@ import ru.mxk.person_backend.service.api.PersonService
 
 @Component
 class CommandRunner(private val personService: PersonService) : CommandLineRunner {
+    private val logger = LoggerFactory.getLogger(CommandRunner::class.java)
     private val faker = Faker()
 
     override fun run(vararg args: String?) {
         if (personService.getAll().isNotEmpty()) {
-            println("Database is filled")
+            logger.info("Database is filled")
             return
         }
 
