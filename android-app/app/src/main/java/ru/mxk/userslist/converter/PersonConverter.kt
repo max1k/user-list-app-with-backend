@@ -2,6 +2,7 @@ package ru.mxk.userslist.converter
 
 import com.github.javafaker.Faker
 import ru.mxk.userslist.model.Person
+import java.util.*
 
 class PersonConverter {
     private val faker = Faker()
@@ -13,13 +14,14 @@ class PersonConverter {
         ).random()
 
         return Person(
-            id = id.toLong(),
+            id = UUID.randomUUID(),
             name = faker.name().fullName(),
             companyName = faker.company().name(),
             photo = photo,
             liked = false,
             fired = false,
-            active = false
+            active = false,
+            details = faker.lorem().paragraphs(3).joinToString("\n")
         )
     }
 }

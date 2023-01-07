@@ -5,7 +5,7 @@ import ru.mxk.userslist.model.Person
 
 interface PersonActionListener {
 
-    fun onPersonGetId(person: Person)
+    fun onShowDetails(person: Person)
 
     fun onPersonLike(person: Person)
 

@@ -2,8 +2,13 @@
     <string name="app_name">Users list application</string>
     <string name="stub_name">Vassily Poupkine</string>
     <string name="more_options_button_text">options button</string>
-    <string name="user_photo_description">user photo</string>
+    <string name="person_photo_description">person photo</string>
     <string name="like_image_description">Like image</string>
     <string name="active_image_description">Active image</string>
     <string name="fired_image_description">Fired image</string>
+    <string name="delete_button_text">Delete</string>
+    <string name="failed_to_load_persons_text">Failed to load persons</string>
+    <string name="try_again_text">Try again</string>
+    <string name="no_persons_found_text">No persons found</string>
+    <string name="user_was_deleted">User successfully deleted</string>
 </resources>

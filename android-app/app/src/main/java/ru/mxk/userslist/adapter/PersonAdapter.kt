@@ -18,19 +18,21 @@ import ru.mxk.userslist.model.Person
 class PersonAdapter(private val actionListener: PersonActionListener) :
     RecyclerView.Adapter<PersonAdapter.PersonViewHolder>(), View.OnClickListener {
 
-    var data = mutableListOf<Person>()
+    private val personMutableList = mutableListOf<Person>()
+
+    var persons: List<Person> = personMutableList
         set(newValue) {
             val diff = DiffUtil.calculateDiff(PersonDiffUtil(field, newValue))
 
-            field.clear()
-            field.addAll(newValue)
+            personMutableList.clear()
+            personMutableList.addAll(newValue)
 
             diff.dispatchUpdatesTo(this)
         }
 
     class PersonViewHolder(val binding: ItemPersonBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun getItemCount() = data.size
+    override fun getItemCount() = persons.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PersonViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -46,7 +48,7 @@ class PersonAdapter(private val actionListener: PersonActionListener) :
     }
 
     override fun onBindViewHolder(holder: PersonViewHolder, position: Int) {
-        val person = data[position]
+        val person = personMutableList[position]
         val context = holder.itemView.context
 
         holder.itemView.tag = person
@@ -92,20 +94,20 @@ class PersonAdapter(private val actionListener: PersonActionListener) :
             R.id.liked_image_view -> actionListener.onPersonLike(person)
             R.id.fired_image_view -> actionListener.onPersonFire(person)
             R.id.active_image_view -> actionListener.onPersonActivate(person)
-            else -> actionListener.onPersonGetId(person)
+            else -> actionListener.onShowDetails(person)
         }
     }
 
     private fun showPopupMenu(view: View) {
         val popupMenu = PopupMenu(view.context, view)
         val person = view.tag as Person
-        val position = data.indexOfFirst { it.id == person.id }
+        val position = personMutableList.indexOfFirst { it.id == person.id }
 
         popupMenu.menu.add(0, ActionType.UP.id, Menu.NONE, "Up").apply {
             isEnabled = position > 0
         }
         popupMenu.menu.add(0, ActionType.DOWN.id, Menu.NONE, "Down").apply {
-            isEnabled = position < data.size - 1
+            isEnabled = position < personMutableList.lastIndex
         }
         popupMenu.menu.add(0, ActionType.REMOVE.id, Menu.NONE, "Remove")
         popupMenu.menu.add(0, ActionType.LIKE.id, Menu.NONE, "Like")
@@ -119,7 +121,7 @@ class PersonAdapter(private val actionListener: PersonActionListener) :
                     actionListener.onPersonMove(person, direction)
                 }
                 ActionType.REMOVE -> actionListener.onPersonRemove(person)
-                ActionType.OPTIONS -> actionListener.onPersonGetId(person)
+                ActionType.OPTIONS -> actionListener.onShowDetails(person)
                 ActionType.LIKE -> actionListener.onPersonLike(person)
                 ActionType.FIRE -> actionListener.onPersonFire(person)
             }
