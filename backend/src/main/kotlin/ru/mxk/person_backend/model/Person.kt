@@ -10,7 +10,8 @@ data class Person(
     val name: String,
     val company: String,
     val avatar: String,
-
     val liked: Boolean,
-    val fired: Boolean
+    val fired: Boolean,
+    val active: Boolean,
+    val details: String
 )

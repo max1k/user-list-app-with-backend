@@ -25,7 +25,9 @@ class CommandRunner(private val personService: PersonService) : CommandLineRunne
                 company = faker.company().name(),
                 avatar = getAvatarUrl(i),
                 liked = false,
-                fired = false
+                fired = false,
+                active = true,
+                details = faker.lorem().paragraphs(3).joinToString("\n")
             )
 
             personService.add(person)

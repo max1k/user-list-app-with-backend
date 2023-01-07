@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS person (
     name     VARCHAR      NOT NULL,
     company  VARCHAR      NOT NULL,
     avatar   VARCHAR      NOT NULL,
-    liked    BOOLEAN          NOT NULL,
-    fired    BOOLEAN          NOT NULL
+    liked    BOOLEAN      NOT NULL,
+    fired    BOOLEAN      NOT NULL,
+    active   BOOLEAN      NOT NULL,
+    details  VARCHAR      NULL
     );
