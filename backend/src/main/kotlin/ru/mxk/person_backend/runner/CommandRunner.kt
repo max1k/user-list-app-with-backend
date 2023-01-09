@@ -18,7 +18,7 @@ class CommandRunner(private val personService: PersonService) : CommandLineRunne
             return
         }
 
-        for (i in 1..100) {
+        for (i in 1..99) {
             val person = Person(
                 id = null,
                 name = faker.name().name(),
@@ -30,7 +30,7 @@ class CommandRunner(private val personService: PersonService) : CommandLineRunne
                 details = faker.lorem().paragraphs(3).joinToString("\n")
             )
 
-            personService.add(person)
+            personService.save(person)
         }
     }
 

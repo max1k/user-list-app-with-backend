@@ -11,13 +11,11 @@ class PersonServiceImpl(
     private val personRepository: PersonRepository
 ) : PersonService {
 
-    override fun getAll(): List<Person> {
-        return personRepository.findAll().toList()
-    }
+    override fun getAll(): List<Person> = personRepository.findAll().toList()
 
-    override fun findById(id: UUID): Person = personRepository.findById(id).orElseThrow()
+    override fun findById(personId: UUID): Person = personRepository.findById(personId).orElseThrow()
 
-    override fun add(person: Person): Person = personRepository.save(person)
+    override fun save(person: Person): Person = personRepository.save(person)
 
     override fun remove(personId: UUID): Person {
         val person = findById(personId)

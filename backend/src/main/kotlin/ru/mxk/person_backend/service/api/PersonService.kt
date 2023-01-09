@@ -7,9 +7,9 @@ import java.util.*
 interface PersonService {
     fun getAll() : List<Person>
 
-    fun findById(id: UUID): Person
+    fun findById(personId: UUID): Person
 
-    fun add(person: Person): Person
+    fun save(person: Person): Person
 
     fun remove(personId: UUID): Person
 
