@@ -14,7 +14,7 @@ class CommandRunner(private val personService: PersonService) : CommandLineRunne
 
     override fun run(vararg args: String?) {
         if (personService.getAll().isNotEmpty()) {
-            logger.info("Database is filled")
+            logger.info("Database is already filled")
             return
         }
 
