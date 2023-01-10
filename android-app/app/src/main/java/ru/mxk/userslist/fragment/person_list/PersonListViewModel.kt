@@ -3,14 +3,19 @@ package ru.mxk.userslist.fragment.person_list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import ru.mxk.userslist.enumeration.Direction
 import ru.mxk.userslist.model.Person
 import ru.mxk.userslist.servce.PersonListener
 import ru.mxk.userslist.servce.PersonService
+import kotlin.coroutines.CoroutineContext
 
 class PersonListViewModel(
     private val personService: PersonService
-) : ViewModel() {
+) : ViewModel(), CoroutineScope {
 
     private val personsMutableLiveData = MutableLiveData<List<Person>>()
     val personsLiveData: LiveData<List<Person>> = personsMutableLiveData
@@ -19,12 +24,18 @@ class PersonListViewModel(
         personsMutableLiveData.value = it
     }
 
+    private val job = Job()
+    override val coroutineContext: CoroutineContext = job + Dispatchers.IO
+
     init {
+        personService.addListener(listener)
         loadPersons()
     }
 
     private fun loadPersons() {
-        personService.addListener(listener)
+        launch {
+            personService.loadAll()
+        }
     }
 
     fun movePerson(person: Person, direction: Direction) {
@@ -32,23 +43,32 @@ class PersonListViewModel(
     }
 
     fun removePerson(person: Person) {
-        return personService.removePerson(person.id)
+        launch {
+            personService.removePerson(person.id)
+        }
     }
 
     override fun onCleared() {
         super.onCleared()
         personService.removeListener(listener)
+        job.cancel()
     }
 
     fun likePerson(person: Person) {
-        personService.likePerson(person.id)
+        launch {
+            personService.likePerson(person.id)
+        }
     }
 
     fun firePerson(person: Person) {
-        personService.firePerson(person.id)
+        launch {
+            personService.firePerson(person.id)
+        }
     }
 
     fun activatePerson(person: Person) {
-        personService.activatePerson(person.id)
+        launch {
+            personService.activatePerson(person.id)
+        }
     }
 }
