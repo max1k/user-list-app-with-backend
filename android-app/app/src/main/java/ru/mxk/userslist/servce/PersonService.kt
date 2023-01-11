@@ -4,30 +4,37 @@ package ru.mxk.userslist.servce
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import ru.mxk.userslist.dto.result.RequestResult
+import ru.mxk.userslist.dto.result.ResultStatus
 import ru.mxk.userslist.enumeration.Direction
 import ru.mxk.userslist.exception.NoSuchPersonException
 import ru.mxk.userslist.model.Person
 import ru.mxk.userslist.repository.PersonRepository
+import java.net.SocketTimeoutException
 import java.util.*
 
-typealias PersonListener = (persons: MutableList<Person>) -> Unit
-
+typealias PersonListener = (persons: RequestResult<MutableList<Person>>) -> Unit
 
 
 class PersonService(private val personRepository: PersonRepository) {
 
-    private val persons : MutableList<Person> = mutableListOf()
+    private var persons: RequestResult<MutableList<Person>> = RequestResult(ResultStatus.PENDING, mutableListOf())
 
-    private var listeners = mutableListOf<PersonListener>()
+    private val listeners = mutableListOf<PersonListener>()
 
     suspend fun loadAll() {
-        persons.clear()
+        persons = RequestResult.ofPending()
+        notifyChanges()
 
-        personRepository.findAll()
-            .process {
-                persons.addAll(it ?: emptyList())
-                notifyChanges()
-            }
+        try {
+            personRepository.findAll()
+                .process {
+                    persons = RequestResult.ofSuccess(it?.toMutableList() ?: mutableListOf())
+                }
+        } catch (exception: SocketTimeoutException) {
+            persons = RequestResult.ofFail()
+            notifyChanges()
+        }
     }
 
     suspend fun likePerson(id: UUID) {
@@ -37,18 +44,15 @@ class PersonService(private val personRepository: PersonRepository) {
         personRepository.save(copiedPerson)
             .process {
                 if (it != null) {
-                    persons[index] = it
-                    notifyChanges()
+                    persons.data[index] = it
                 }
             }
     }
 
     private suspend fun<T> Response<T>.process(consumer: (T?) -> Unit) {
-        val response = this
-        withContext(Dispatchers.Main) {
-            if (response.isSuccessful) {
-                consumer.invoke(response.body())
-            }
+        if (isSuccessful) {
+            consumer.invoke(body())
+            notifyChanges()
         }
     }
 
@@ -59,8 +63,7 @@ class PersonService(private val personRepository: PersonRepository) {
         personRepository.save(copiedPerson)
             .process {
                 if (it != null) {
-                    persons[index] = it
-                    notifyChanges()
+                    persons.data[index] = it
                 }
             }
     }
@@ -72,8 +75,7 @@ class PersonService(private val personRepository: PersonRepository) {
         personRepository.save(copiedPerson)
             .process {
                 if (it != null) {
-                    persons[index] = it
-                    notifyChanges()
+                    persons.data[index] = it
                 }
             }
     }
@@ -83,17 +85,16 @@ class PersonService(private val personRepository: PersonRepository) {
             .process {
                 if (it != null) {
                     val (index, _) = getPersonWithIndexById(it.id)
-                    persons.removeAt(index)
-                    notifyChanges()
+                    persons.data.removeAt(index)
                 }
             }
     }
 
-    fun movePerson(id: UUID, direction: Direction) {
+    suspend fun movePerson(id: UUID, direction: Direction) {
         val (oldIndex, _) = getPersonWithIndexById(id)
 
         val newIndex = oldIndex + direction.value
-        Collections.swap(persons, oldIndex, newIndex)
+        Collections.swap(persons.data, oldIndex, newIndex)
 
         notifyChanges()
     }
@@ -108,9 +109,9 @@ class PersonService(private val personRepository: PersonRepository) {
     }
 
     private fun getPersonWithIndexById(id: UUID): Pair<Int, Person> {
-        val index = persons.indexOfFirst { it.id == id }
+        val index = persons.data.indexOfFirst { it.id == id }
         if (index == -1) throw NoSuchPersonException(id)
-        val person = persons[index]
+        val person = persons.data[index]
 
         return Pair(index, person)
     }
@@ -123,5 +124,9 @@ class PersonService(private val personRepository: PersonRepository) {
         listeners.remove(listener)
     }
 
-    private fun notifyChanges() = listeners.forEach { it.invoke(persons) }
+    private suspend fun notifyChanges() {
+        withContext(Dispatchers.Main) {
+            listeners.forEach { it.invoke(persons) }
+        }
+    }
 }

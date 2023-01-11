@@ -7,6 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import ru.mxk.userslist.dto.result.RequestResult
 import ru.mxk.userslist.enumeration.Direction
 import ru.mxk.userslist.model.Person
 import ru.mxk.userslist.servce.PersonListener
@@ -17,8 +18,8 @@ class PersonListViewModel(
     private val personService: PersonService
 ) : ViewModel(), CoroutineScope {
 
-    private val personsMutableLiveData = MutableLiveData<List<Person>>()
-    val personsLiveData: LiveData<List<Person>> = personsMutableLiveData
+    private val personsMutableLiveData = MutableLiveData<RequestResult<out List<Person>>>()
+    val personsLiveData: LiveData<RequestResult<out List<Person>>> = personsMutableLiveData
 
     private val listener: PersonListener = {
         personsMutableLiveData.value = it
@@ -32,14 +33,16 @@ class PersonListViewModel(
         loadPersons()
     }
 
-    private fun loadPersons() {
+    fun loadPersons() {
         launch {
             personService.loadAll()
         }
     }
 
     fun movePerson(person: Person, direction: Direction) {
-        personService.movePerson(person.id, direction)
+        launch {
+            personService.movePerson(person.id, direction)
+        }
     }
 
     fun removePerson(person: Person) {

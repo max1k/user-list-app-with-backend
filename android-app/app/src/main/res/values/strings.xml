@@ -11,4 +11,5 @@
     <string name="try_again_text">Try again</string>
     <string name="no_persons_found_text">No persons found</string>
     <string name="user_was_deleted">User successfully deleted</string>
+    <string name="failed_to_load_person">Failed to load person details</string>
 </resources>

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.mxk.userslist.adapter.PersonActionListener
 import ru.mxk.userslist.adapter.PersonAdapter
 import ru.mxk.userslist.databinding.FragmentPersonListBinding
+import ru.mxk.userslist.dto.result.ResultStatus
 import ru.mxk.userslist.enumeration.Direction
 import ru.mxk.userslist.fragment.util.factory
 import ru.mxk.userslist.fragment.util.navigator
@@ -55,11 +56,30 @@ class PersonListFragment : Fragment() {
             }
         })
 
-        viewModel.personsLiveData.observe(viewLifecycleOwner) { adapter.persons = it }
+        viewModel.personsLiveData.observe(viewLifecycleOwner) {
+            with(binding) {
+                recyclerView.visibility = View.GONE
+                progressBar.visibility = View.GONE
+                tryAgainContainer.visibility = View.GONE
+
+                when (it.status) {
+                    ResultStatus.DONE -> {
+                        recyclerView.visibility = View.VISIBLE
+                        adapter.persons = it.data
+                    }
+                    ResultStatus.PENDING -> progressBar.visibility = View.VISIBLE
+                    ResultStatus.FAIL -> tryAgainContainer.visibility = View.VISIBLE
+                }
+            }
+        }
 
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = adapter
+
+        binding.tryAgainButton.setOnClickListener{
+            viewModel.loadPersons()
+        }
 
         return binding.root
     }
