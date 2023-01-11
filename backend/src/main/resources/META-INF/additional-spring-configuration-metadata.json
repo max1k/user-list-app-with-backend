@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "app.response.delay",
+      "type": "java.lang.String",
+      "description": "Delay between response making. Example: PT3S."
+    }
+  ] }

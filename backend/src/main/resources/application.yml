@@ -10,3 +10,7 @@ spring:
       mode: always
 server:
   port: 8088
+
+app:
+  response:
+    delay: PT0S
