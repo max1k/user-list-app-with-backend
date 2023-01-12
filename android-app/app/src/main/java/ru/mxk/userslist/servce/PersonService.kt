@@ -1,8 +1,6 @@
 package ru.mxk.userslist.servce
 
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 import ru.mxk.userslist.dto.result.RequestResult
 import ru.mxk.userslist.dto.result.ResultStatus
@@ -11,7 +9,8 @@ import ru.mxk.userslist.exception.NoSuchPersonException
 import ru.mxk.userslist.model.Person
 import ru.mxk.userslist.repository.PersonRepository
 import java.net.SocketTimeoutException
-import java.util.*
+import java.util.Collections
+import java.util.UUID
 
 typealias PersonListener = (persons: RequestResult<MutableList<Person>>) -> Unit
 
@@ -49,7 +48,7 @@ class PersonService(private val personRepository: PersonRepository) {
             }
     }
 
-    private suspend fun<T> Response<T>.process(consumer: (T?) -> Unit) {
+    private fun<T> Response<T>.process(consumer: (T?) -> Unit) {
         if (isSuccessful) {
             consumer.invoke(body())
             notifyChanges()
@@ -90,7 +89,7 @@ class PersonService(private val personRepository: PersonRepository) {
             }
     }
 
-    suspend fun movePerson(id: UUID, direction: Direction) {
+    fun movePerson(id: UUID, direction: Direction) {
         val (oldIndex, _) = getPersonWithIndexById(id)
 
         val newIndex = oldIndex + direction.value
@@ -124,9 +123,7 @@ class PersonService(private val personRepository: PersonRepository) {
         listeners.remove(listener)
     }
 
-    private suspend fun notifyChanges() {
-        withContext(Dispatchers.Main) {
-            listeners.forEach { it.invoke(persons) }
-        }
+    private fun notifyChanges() {
+        listeners.forEach { it.invoke(persons) }
     }
 }

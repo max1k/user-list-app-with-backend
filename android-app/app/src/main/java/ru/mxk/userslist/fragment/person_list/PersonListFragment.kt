@@ -65,7 +65,7 @@ class PersonListFragment : Fragment() {
                 when (it.status) {
                     ResultStatus.DONE -> {
                         recyclerView.visibility = View.VISIBLE
-                        adapter.persons = it.data
+                        adapter.setItems(it.data)
                     }
                     ResultStatus.PENDING -> progressBar.visibility = View.VISIBLE
                     ResultStatus.FAIL -> tryAgainContainer.visibility = View.VISIBLE

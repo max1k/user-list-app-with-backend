@@ -1,8 +1,18 @@
 package ru.mxk.userslist.dto.result
 
+import androidx.arch.core.util.Function
+
 data class RequestResult<T>(val status: ResultStatus, private val value: T?) {
 
     val data: T get() = value ?: throw NoSuchElementException("Value is not set")
+
+    fun <K> map(mapper: Function<T, K>): RequestResult<K> {
+        return if (status == ResultStatus.DONE) {
+            ofSuccess(mapper.apply(value))
+        } else {
+            RequestResult(status, null)
+        }
+    }
 
     companion object {
         fun <T> ofPending(): RequestResult<T> {
