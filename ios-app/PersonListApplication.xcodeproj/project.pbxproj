@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC06CE862999FF9E00C9D4C1 /* Call.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC06CE852999FF9E00C9D4C1 /* Call.swift */; };
 		DC3F6098297181A700A09494 /* PersonListApplicationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F6097297181A700A09494 /* PersonListApplicationApp.swift */; };
 		DC3F609A297181A700A09494 /* PersonListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3F6099297181A700A09494 /* PersonListView.swift */; };
 		DC3F609C297181A900A09494 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DC3F609B297181A900A09494 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC06CE852999FF9E00C9D4C1 /* Call.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Call.swift; sourceTree = "<group>"; };
 		DC3F6094297181A700A09494 /* PersonListApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PersonListApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC3F6097297181A700A09494 /* PersonListApplicationApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonListApplicationApp.swift; sourceTree = "<group>"; };
 		DC3F6099297181A700A09494 /* PersonListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonListView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			children = (
 				DC3F60BB29749E9900A09494 /* enum */,
 				DC3F60B929749E5900A09494 /* RestApiRequest.swift */,
+				DC06CE852999FF9E00C9D4C1 /* Call.swift */,
 			);
 			path = http;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 				DC3F609A297181A700A09494 /* PersonListView.swift in Sources */,
 				DC8939182976BA9800B3BA30 /* TestData.swift in Sources */,
 				DC3F60BA29749E5900A09494 /* RestApiRequest.swift in Sources */,
+				DC06CE862999FF9E00C9D4C1 /* Call.swift in Sources */,
 				DC3F60B82974989500A09494 /* HttpMethod.swift in Sources */,
 				DC3F60AE2972889300A09494 /* PersonDataModel.swift in Sources */,
 				DC3F60AC297284C300A09494 /* PersonDetailsView.swift in Sources */,

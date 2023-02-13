@@ -71,7 +71,8 @@ struct PersonDetailsView: View {
     func deletePerson(_ person: Person) {
         isProcessing = true
         
-        personService.delete(personId: person.id) { _ in
+        let call = personService.delete(personId: person.id)
+        let _ = call.onResult { _ in
             isProcessing = false
             presentation.wrappedValue.dismiss()
         }

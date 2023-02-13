@@ -13,8 +13,10 @@ class PersonListDataModel: ObservableObject {
         guard !isLoading else { return }
         isLoading = true
         
-        personService.findAll { persons in
-            self.persons = persons ?? []
+        let call = personService.findAll()
+        
+        let _ = call.onResult { persons in
+            self.persons = persons
             self.refreshItems()
             self.isLoading = false
         }
@@ -34,8 +36,9 @@ class PersonListDataModel: ObservableObject {
     }
     
     func deletePerson(person: Person) {
-        personService.delete(personId: person.id) { deletedPerson in
-            self.personItems.removeAll(where: { personItem in personItem.person.id == deletedPerson?.id})
+        let call = personService.delete(personId: person.id)
+        let _ = call.onResult { deletedPerson in
+            self.personItems.removeAll(where: { personItem in personItem.person.id == deletedPerson.id})
         }
     }
     
@@ -69,8 +72,10 @@ class PersonListDataModel: ObservableObject {
         processingPersonIds.insert(person.id)
         refreshItems()
         
-        personService.save(person: person) { updatedPerson in
-            guard let index = self.findIndex(updatedPerson), let updatedPerson = updatedPerson
+        let call = personService.save(person: person)
+        
+        let _ = call.onResult { updatedPerson in
+            guard let index = self.findIndex(updatedPerson)
             else {
                 return
             }

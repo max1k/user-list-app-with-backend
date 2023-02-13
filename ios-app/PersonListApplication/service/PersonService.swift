@@ -1,7 +1,7 @@
 import Foundation
 
 
-let personService = PersonService(baseUrl: "http://10.224.9.136:8088/person")
+let personService = PersonService(baseUrl: "http://192.168.31.146:8088/person")
 
 class PersonService {
     private let requestAll = "/all"
@@ -14,24 +14,24 @@ class PersonService {
     }
     
     
-    func findAll(onLoad: @escaping ([Person]?) -> Void) {
-        let request: RestApiRequest<[Person]> = RestApiRequest(url: URL(string: baseUrl + requestAll)!, httpMethod: .get)
-        request.execute(withCompletion: onLoad)
+    func findAll() -> Call<[Person]> {
+        return RestApiRequest(url: URL(string: baseUrl + requestAll)!, httpMethod: .get)
+            .execute()
     }
     
-    func findById(personId: String, onLoad: @escaping (Person?) -> Void) {
-        let request: RestApiRequest<Person> = RestApiRequest(url: URL(string: "\(baseUrl)/\(personId)")!, httpMethod: .get)
-        request.execute(withCompletion: onLoad)
+    func findById(personId: String) -> Call<Person> {
+        return RestApiRequest(url: URL(string: "\(baseUrl)/\(personId)")!, httpMethod: .get)
+            .execute()
     }
     
-    func delete(personId: String, onLoad: @escaping (Person?) -> Void) {
-        let request: RestApiRequest<Person> = RestApiRequest(url: URL(string: "\(baseUrl)/\(personId)")!, httpMethod: .delete)
-        request.execute(withCompletion: onLoad)
+    func delete(personId: String) -> Call<Person> {
+        return RestApiRequest(url: URL(string: "\(baseUrl)/\(personId)")!, httpMethod: .delete)
+            .execute()
     }
     
-    func save(person: Person, onLoad: @escaping (Person?) -> Void) {
-        let request: RestApiRequest<Person> = RestApiRequest(url: URL(string: baseUrl)!, httpMethod: .post, body: person)
-        request.execute(withCompletion: onLoad)
+    func save(person: Person) -> Call<Person> {
+        return RestApiRequest(url: URL(string: baseUrl)!, httpMethod: .post, body: person)
+            .execute()
     }
     
 }
